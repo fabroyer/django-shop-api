@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
 
-# Create your views here.
+from shop.models import Category, Product
+from shop.serializers import CategorySerializer, ProductSerializer
+
+
+# class CategoryView(APIView):
+
+
+# class ProductView(APIView):
