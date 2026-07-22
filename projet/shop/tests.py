@@ -40,10 +40,10 @@ class TestCategory(ShopAPITestCase):
         self.assertEqual(response.json(), expected)
 
     def test_create(self):
-        category_count = Category.objects.counts()
+        category_count = Category.objects.count()
         response = self.client.post(self.url, data={'name': 'Tentative'})
         self.assertEqual(response.status_code, 405)
-        self.assertFalse(Category.objects.count(), category_count)
+        self.assertEqual(Category.objects.count(), category_count)
 
 class TestProduct(ShopAPITestCase):
 

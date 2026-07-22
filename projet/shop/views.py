@@ -6,20 +6,20 @@ from shop.serializers import CategorySerializer, ProductSerializer, ArticleSeria
 
 
 
-class CategoryViewset(ReadOnlyModelViewset):
+class CategoryViewset(ReadOnlyModelViewSet):
 
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        return Category.objects.all()
+        return Category.objects.filter(active=True)
 
 
-class ProductViewset(ReadOnlyModelViewset):
+class ProductViewset(ReadOnlyModelViewSet):
 
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        queryset = Product.objects.all()
+        queryset = Product.objects.filter(active=True)
         category_id = self.request.GET.get('category_id')
         if category_id:
             queryset = queryset.filter(category_id=category_id)
