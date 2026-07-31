@@ -11,7 +11,13 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['id', 'date_created', 'date_updated', 'name', 'price', 'product']
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategoryListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ['id', 'date_created', 'date_updated', 'name']
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
 
     products = serializers.SerializerMethodField()
 
@@ -24,8 +30,13 @@ class CategorySerializer(serializers.ModelSerializer):
         serializer = ProductSerializer(queryset, many=True)
         return serializer.data
 
+class ProductListSerializer(serializers.ModelSerializer):
 
-class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['id', 'date_created', 'date_updated', 'name', 'category']
+
+class ProductDetailSerializer(serializers.ModelSerializer):
 
     articles = serializers.SerializerMethodField()
 
