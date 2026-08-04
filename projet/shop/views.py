@@ -24,10 +24,10 @@ class CategoryViewset(MultipleSerializerMixin, ReadOnlyModelViewSet):
     def get_queryset(self):
         return Category.objects.filter(active=True)
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return self.detail_serializer_class
-        return super().get_serializer_class()
+    @action(detail=True, methods=['post'])
+    def disable(self, request, pk):
+        self.get_object().disable()
+        return Response()
 
 
 class ProductViewset(ReadOnlyModelViewSet):
@@ -41,6 +41,11 @@ class ProductViewset(ReadOnlyModelViewSet):
         if category_id:
             queryset = queryset.filter(category_id=category_id)
         return queryset
+
+    @action(detail=True, methods=['post'])
+    def disable(self, request, pk):
+        self.get_object().disable()
+        return Response()
 
 class ArticleViewset(ReadOnlyModelViewSet):
 
