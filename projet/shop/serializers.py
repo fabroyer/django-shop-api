@@ -15,7 +15,17 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'date_created', 'date_updated', 'name']
+        fields = ['id', 'date_created', 'date_updated', 'name', 'description']
+
+    def validate_name(self, value):
+        if Category.objects.filter(name=value).exists():
+            raise serializers.ValidationError('Category already exists')
+        return value
+
+    def validate(self, data):
+        if data['name'] not in data['description']:
+            raise serializers.ValidationError('Name must be in description')
+        return data
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
 
@@ -27,7 +37,7 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
     def get_products(self, instance):
         queryset = instance.products.filter(active=True)
-        serializer = ProductSerializer(queryset, many=True)
+        serializer = ProductListSerializer(queryset, many=True)
         return serializer.data
 
 class ProductListSerializer(serializers.ModelSerializer):

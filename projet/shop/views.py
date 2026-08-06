@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
@@ -16,6 +16,13 @@ class MultipleSerializerMixin:
         return super().get_serializer_class()
 
 
+class AdminCategoryViewset(MultipleSerializerMixin, ModelViewSet):
+
+    serializer_class = CategoryListSerializer
+    detail_serializer_class = CategoryDetailSerializer
+    queryset = Category.objects.all()
+
+
 class CategoryViewset(MultipleSerializerMixin, ReadOnlyModelViewSet):
 
     serializer_class = CategoryListSerializer
@@ -30,7 +37,7 @@ class CategoryViewset(MultipleSerializerMixin, ReadOnlyModelViewSet):
         return Response()
 
 
-class ProductViewset(ReadOnlyModelViewSet):
+class ProductViewset(MultipleSerializerMixin, ReadOnlyModelViewSet):
 
     serializer_class = ProductListSerializer
     detail_serializer_class = ProductDetailSerializer
